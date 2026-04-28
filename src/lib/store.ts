@@ -70,7 +70,8 @@ export async function getCurrentUserProfile(): Promise<UserProfile> {
         display_name: name,
         full_name: fullName,
         email: user.email ?? null,
-        avatar_url: profile?.avatar_url ?? user.user_metadata.avatar_url ?? null,
+        avatar_url:
+          profile?.avatar_url ?? user.user_metadata.avatar_url ?? null,
       })
       .select("id")
       .single();
@@ -95,7 +96,9 @@ export async function getRecipes(): Promise<Recipe[]> {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("recipes")
-    .select("*, profiles!recipes_owner_id_fkey(display_name, full_name, email, avatar_url)")
+    .select(
+      "*, profiles!recipes_owner_id_fkey(display_name, full_name, email, avatar_url)",
+    )
     .order("created_at", { ascending: false });
 
   if (error) throw error;
@@ -106,7 +109,9 @@ export async function getRecipe(id: string): Promise<Recipe | null> {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("recipes")
-    .select("*, profiles!recipes_owner_id_fkey(display_name, full_name, email, avatar_url)")
+    .select(
+      "*, profiles!recipes_owner_id_fkey(display_name, full_name, email, avatar_url)",
+    )
     .eq("id", id)
     .maybeSingle();
 
@@ -156,10 +161,12 @@ export async function uploadRecipePhoto(file: File): Promise<string> {
 
   const extension = file.name.split(".").pop() ?? "jpg";
   const path = `${user.id}/${crypto.randomUUID()}.${extension}`;
-  const { error } = await supabase.storage.from("recipe-photos").upload(path, file, {
-    cacheControl: "3600",
-    upsert: false,
-  });
+  const { error } = await supabase.storage
+    .from("recipe-photos")
+    .upload(path, file, {
+      cacheControl: "3600",
+      upsert: false,
+    });
 
   if (error) throw error;
 
@@ -214,7 +221,7 @@ export function createBlankRecipe(profile: UserProfile): Recipe {
     title: "",
     description: "",
     photo:
-      "https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1575000977355-8b2a719926c9?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     servings: 4,
     prepTime: 15,
     cookTime: 30,

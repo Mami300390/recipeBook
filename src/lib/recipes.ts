@@ -204,7 +204,9 @@ export const seedRecipes: Recipe[] = [
   },
 ];
 
-export const cuisines = Array.from(new Set(seedRecipes.map((recipe) => recipe.cuisine)));
+export const cuisines = Array.from(
+  new Set(seedRecipes.map((recipe) => recipe.cuisine)),
+);
 export const dietaryTags = Array.from(
   new Set(seedRecipes.flatMap((recipe) => recipe.dietary)),
 );

@@ -60,27 +60,27 @@ export function RecipeExplorer({
     <>
       <section className="mx-auto mb-6 flex w-[min(1120px,calc(100%-32px))] flex-col gap-4 px-4 md:flex-row md:items-end md:justify-between md:px-0">
         <div>
-          <p className="mb-2 text-xs font-black uppercase tracking-[0.16em] text-[#b65f3a]">
+          <p className="mb-2 text-xs font-black uppercase tracking-[0.16em] text-[#d94f32]">
             Recipe Book
           </p>
-          <h1 className="serif text-5xl font-black leading-none text-[#334028] md:text-7xl">
+          <h1 className="serif text-5xl font-black leading-none text-[#1f2520] md:text-7xl">
             {title}
           </h1>
         </div>
-        <p className="max-w-xl leading-7 text-[#766a5e]">{description}</p>
+        <p className="max-w-xl leading-7 text-[#596159]">{description}</p>
       </section>
       <section
-        className="mx-auto mb-6 grid w-[min(1120px,calc(100%-32px))] grid-cols-1 gap-2 px-4 md:grid-cols-[1.4fr_repeat(4,minmax(130px,1fr))] md:px-0"
+        className="mx-auto mb-6 grid w-[min(1120px,calc(100%-32px))] grid-cols-1 gap-2 rounded-3xl border border-black/10 bg-white/75 p-3 shadow-[0_18px_50px_rgba(31,37,32,0.08)] backdrop-blur md:grid-cols-[1.4fr_repeat(4,minmax(130px,1fr))]"
         aria-label="Recipe filters"
       >
         <input
-          className="min-h-11 rounded-lg border border-[#4a3a2c]/15 bg-[#fffaf0]/90 px-3 text-[#2f2924] outline-none transition placeholder:text-[#9a8d80] focus:border-[#b65f3a]/50 focus:ring-4 focus:ring-[#b65f3a]/10"
+          className="min-h-11 rounded-2xl border border-black/10 bg-white px-3 text-[#1f2520] outline-none transition placeholder:text-[#8b9288] focus:border-[#d94f32]/50 focus:ring-4 focus:ring-[#d94f32]/10"
           placeholder="Search title, ingredient, tag, author"
           value={filters.query}
           onChange={(event) => updateFilter("query", event.target.value)}
         />
         <select
-          className="min-h-11 rounded-lg border border-[#4a3a2c]/15 bg-[#fffaf0]/90 px-3 font-bold text-[#2f2924]"
+          className="min-h-11 rounded-2xl border border-black/10 bg-white px-3 font-bold text-[#1f2520]"
           value={filters.cuisine}
           onChange={(event) => updateFilter("cuisine", event.target.value)}
         >
@@ -90,7 +90,7 @@ export function RecipeExplorer({
           ))}
         </select>
         <select
-          className="min-h-11 rounded-lg border border-[#4a3a2c]/15 bg-[#fffaf0]/90 px-3 font-bold text-[#2f2924]"
+          className="min-h-11 rounded-2xl border border-black/10 bg-white px-3 font-bold text-[#1f2520]"
           value={filters.dietary}
           onChange={(event) => updateFilter("dietary", event.target.value)}
         >
@@ -100,7 +100,7 @@ export function RecipeExplorer({
           ))}
         </select>
         <select
-          className="min-h-11 rounded-lg border border-[#4a3a2c]/15 bg-[#fffaf0]/90 px-3 font-bold text-[#2f2924]"
+          className="min-h-11 rounded-2xl border border-black/10 bg-white px-3 font-bold text-[#1f2520]"
           value={filters.difficulty}
           onChange={(event) => updateFilter("difficulty", event.target.value)}
         >
@@ -110,7 +110,7 @@ export function RecipeExplorer({
           ))}
         </select>
         <select
-          className="min-h-11 rounded-lg border border-[#4a3a2c]/15 bg-[#fffaf0]/90 px-3 font-bold text-[#2f2924]"
+          className="min-h-11 rounded-2xl border border-black/10 bg-white px-3 font-bold text-[#1f2520]"
           value={filters.maxCookTime}
           onChange={(event) => updateFilter("maxCookTime", event.target.value)}
         >
@@ -121,7 +121,7 @@ export function RecipeExplorer({
           <option value="60">60 min</option>
         </select>
         <select
-          className="min-h-11 rounded-lg border border-[#4a3a2c]/15 bg-[#fffaf0]/90 px-3 font-bold text-[#2f2924] md:col-start-1"
+          className="min-h-11 rounded-2xl border border-black/10 bg-white px-3 font-bold text-[#1f2520] md:col-start-1"
           value={filters.sort}
           onChange={(event) => updateFilter("sort", event.target.value as Filters["sort"])}
         >
@@ -143,18 +143,18 @@ export function RecipeExplorer({
           ))}
         </section>
       ) : error ? (
-        <section className="mx-auto w-[min(1120px,calc(100%-32px))] rounded-lg border border-dashed border-[#55633f]/40 bg-[#fffaf0]/75 p-8 text-center">
-          <h2 className="serif text-3xl font-black text-[#334028]">
+        <section className="mx-auto w-[min(1120px,calc(100%-32px))] rounded-3xl border border-dashed border-[#6f8764]/40 bg-white/75 p-8 text-center shadow-[0_18px_50px_rgba(31,37,32,0.08)]">
+          <h2 className="serif text-3xl font-black text-[#1f2520]">
             Supabase needs a little attention.
           </h2>
-          <p className="mt-2 text-[#766a5e]">{error}</p>
+          <p className="mt-2 text-[#596159]">{error}</p>
         </section>
       ) : (
-        <section className="mx-auto w-[min(1120px,calc(100%-32px))] rounded-lg border border-dashed border-[#55633f]/40 bg-[#fffaf0]/75 p-8 text-center">
-          <h2 className="serif text-3xl font-black text-[#334028]">{emptyTitle}</h2>
+        <section className="mx-auto w-[min(1120px,calc(100%-32px))] rounded-3xl border border-dashed border-[#6f8764]/40 bg-white/75 p-8 text-center shadow-[0_18px_50px_rgba(31,37,32,0.08)]">
+          <h2 className="serif text-3xl font-black text-[#1f2520]">{emptyTitle}</h2>
           {emptyAction ? (
             <Link
-              className="mt-5 inline-flex min-h-11 items-center rounded-lg bg-[#b65f3a] px-5 font-black text-white shadow-lg shadow-[#8f4328]/20 transition hover:bg-[#8f4328]"
+              className="mt-5 inline-flex min-h-11 items-center rounded-2xl bg-[#d94f32] px-5 font-black text-white shadow-lg shadow-[#d94f32]/20 transition hover:bg-[#b83e27]"
               href="/app/new"
             >
               {emptyAction}

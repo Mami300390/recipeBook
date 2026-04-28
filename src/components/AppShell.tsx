@@ -52,8 +52,8 @@ export function AppShell({ children }: Props) {
   }
 
   return (
-    <div className="min-h-screen md:grid md:grid-cols-[280px_minmax(0,1fr)]">
-      <aside className="no-print border-b border-[#4a3a2c]/15 bg-[#fffaf0]/90 p-5 backdrop-blur md:sticky md:top-0 md:h-screen md:border-b-0 md:border-r md:p-6">
+    <div className="min-h-screen lg:grid lg:grid-cols-[280px_minmax(0,1fr)]">
+      <aside className="no-print border-b border-black/10 bg-white/80 p-5 shadow-[0_16px_50px_rgba(31,37,32,0.08)] backdrop-blur-xl lg:sticky lg:top-0 lg:h-screen lg:border-b-0 lg:border-r lg:p-6">
         <Link href="/app" className="flex items-center">
           <Image
             src="/logo-bg.png"
@@ -61,11 +61,11 @@ export function AppShell({ children }: Props) {
             width={220}
             height={80}
             priority
-            className="h-14 mb-2 w-auto object-contain"
+            className="mb-5 h-14 w-auto object-contain"
           />
         </Link>
         <nav
-          className="grid grid-cols-2 gap-2 md:grid-cols-1"
+          className="grid grid-cols-2 gap-2 lg:grid-cols-1"
           aria-label="Recipe app"
         >
           <Link className={navClass(pathname === "/app")} href="/app">
@@ -88,11 +88,11 @@ export function AppShell({ children }: Props) {
           </Link>
         </nav>
       </aside>
-      <main className="py-7">
+      <main className="py-6 lg:py-8">
         <div className="no-print mx-auto mb-8 flex w-[min(1120px,calc(100%-32px))] flex-col gap-4 px-4 md:flex-row md:items-center md:justify-between md:px-0">
-          <div className="flex flex-wrap items-center gap-2 rounded-lg border border-[#4a3a2c]/15 bg-[#fffaf0]/85 p-2 shadow-sm">
+          <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-black/10 bg-white/75 p-2 shadow-[0_12px_34px_rgba(31,37,32,0.08)] backdrop-blur">
             <select
-              className="min-h-11 rounded-lg border border-[#4a3a2c]/15 bg-white/70 px-3 text-sm font-bold text-[#2f2924]"
+              className="min-h-11 rounded-xl border border-black/10 bg-white px-3 text-sm font-bold text-[#1f2520] outline-none"
               aria-label="Surprise recipe scope"
               value={scope}
               onChange={(event) => setScope(event.target.value)}
@@ -102,14 +102,14 @@ export function AppShell({ children }: Props) {
               <option value="favorites">My Favorites</option>
             </select>
             <button
-              className="min-h-11 rounded-lg bg-[#55633f] px-4 text-sm font-black text-white shadow-lg shadow-[#334028]/20 transition hover:bg-[#334028]"
+              className="min-h-11 rounded-xl bg-[#d94f32] px-4 text-sm font-black text-white shadow-lg shadow-[#d94f32]/25 transition hover:bg-[#b83e27]"
               type="button"
               onClick={surpriseMe}
             >
               Surprise Me
             </button>
           </div>
-          <div className="flex items-center gap-3 rounded-lg border border-[#4a3a2c]/15 bg-[#fffaf0]/85 p-2 shadow-sm">
+          <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-white/75 p-2 shadow-[0_12px_34px_rgba(31,37,32,0.08)] backdrop-blur">
             {profile?.avatarUrl ? (
               <Image
                 src={profile.avatarUrl}
@@ -119,13 +119,13 @@ export function AppShell({ children }: Props) {
                 className="h-10 w-10 rounded-full object-cover"
               />
             ) : (
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-[#55633f] font-black text-white">
-                {profile?.avatar ?? "?"}
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-[#6f8764] font-black text-white">
+                {profile?.avatar ?? ""}
               </span>
             )}
             <strong>{profile?.name ?? "Cook"}</strong>
             <button
-              className="min-h-10 rounded-lg border border-[#4a3a2c]/15 bg-white/60 px-3 text-sm font-black transition hover:bg-white"
+              className="min-h-10 rounded-xl border border-black/10 bg-white px-3 text-sm font-black text-[#1f2520] transition hover:border-[#d94f32]/40 hover:text-[#d94f32]"
               type="button"
               onClick={handleSignOut}
             >
@@ -141,9 +141,9 @@ export function AppShell({ children }: Props) {
 
 function navClass(active: boolean) {
   return [
-    "rounded-lg border px-4 py-3 text-sm font-black transition",
+    "rounded-2xl border px-4 py-3 text-sm font-black transition",
     active
-      ? "border-[#b65f3a]/30 bg-[#fff7e8] text-[#8f4328] shadow-sm"
-      : "border-transparent text-[#2f2924] hover:border-[#4a3a2c]/15 hover:bg-[#fff7e8] hover:text-[#8f4328]",
+      ? "border-[#d94f32]/25 bg-[#d94f32] text-white shadow-lg shadow-[#d94f32]/20"
+      : "border-transparent text-[#4c554d] hover:border-black/10 hover:bg-[#f5efe3] hover:text-[#d94f32]",
   ].join(" ");
 }
