@@ -23,7 +23,10 @@ export type Recipe = {
   visibility: Visibility;
   ownerId: string;
   authorName: string;
+  authorFullName: string;
+  authorEmail: string | null;
   authorAvatar: string;
+  authorAvatarUrl: string | null;
   createdAt: string;
 };
 
@@ -67,7 +70,10 @@ export const seedRecipes: Recipe[] = [
     visibility: "public",
     ownerId: "user-me",
     authorName: "Maya Stone",
+    authorFullName: "Maya Stone",
+    authorEmail: null,
     authorAvatar: "MS",
+    authorAvatarUrl: null,
     createdAt: "2026-04-20",
   },
   {
@@ -100,7 +106,10 @@ export const seedRecipes: Recipe[] = [
     visibility: "private",
     ownerId: "user-me",
     authorName: "Maya Stone",
+    authorFullName: "Maya Stone",
+    authorEmail: null,
     authorAvatar: "MS",
+    authorAvatarUrl: null,
     createdAt: "2026-04-18",
   },
   {
@@ -133,7 +142,10 @@ export const seedRecipes: Recipe[] = [
     visibility: "public",
     ownerId: "user-ana",
     authorName: "Ana Haddad",
+    authorFullName: "Ana Haddad",
+    authorEmail: null,
     authorAvatar: "AH",
+    authorAvatarUrl: null,
     createdAt: "2026-04-14",
   },
   {
@@ -166,7 +178,10 @@ export const seedRecipes: Recipe[] = [
     visibility: "public",
     ownerId: "user-nour",
     authorName: "Nour Saleh",
+    authorFullName: "Nour Saleh",
+    authorEmail: null,
     authorAvatar: "NS",
+    authorAvatarUrl: null,
     createdAt: "2026-04-11",
   },
   {
@@ -199,7 +214,10 @@ export const seedRecipes: Recipe[] = [
     visibility: "public",
     ownerId: "user-eli",
     authorName: "Eli Park",
+    authorFullName: "Eli Park",
+    authorEmail: null,
     authorAvatar: "EP",
+    authorAvatarUrl: null,
     createdAt: "2026-04-07",
   },
 ];

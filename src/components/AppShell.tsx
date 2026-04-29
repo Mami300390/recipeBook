@@ -3,14 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { ReactNode, useEffect, useState } from "react";
-import { UserProfile } from "@/lib/recipes";
-import {
-  getCurrentUserProfile,
-  getFavorites,
-  getRecipes,
-  signOut,
-} from "@/lib/store";
+import { FormEvent, ReactNode, useEffect, useMemo, useState } from "react";
+import { Recipe, UserProfile } from "@/lib/recipes";
+import { getCurrentUserProfile, getRecipes, signOut } from "@/lib/store";
 
 type Props = {
   children: ReactNode;
@@ -19,31 +14,73 @@ type Props = {
 export function AppShell({ children }: Props) {
   const pathname = usePathname();
   const router = useRouter();
-  const [scope, setScope] = useState("mine");
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  const recipePool = useMemo(
+    () =>
+      profile
+        ? recipes.filter(
+            (recipe) =>
+              recipe.ownerId === profile.id || recipe.visibility === "public",
+          )
+        : [],
+    [profile, recipes],
+  );
+
+  const searchResults = useMemo(() => {
+    const query = normalize(searchQuery);
+    if (!query) return [];
+
+    return recipePool
+      .filter((recipe) =>
+        normalize(
+          [
+            recipe.title,
+            recipe.description,
+            recipe.cuisine,
+            recipe.authorName,
+            recipe.difficulty,
+            recipe.dietary.join(" "),
+            recipe.ingredients.map((ingredient) => ingredient.name).join(" "),
+          ].join(" "),
+        ).includes(query),
+      )
+      .slice(0, 6);
+  }, [recipePool, searchQuery]);
 
   useEffect(() => {
-    if (pathname.includes("discover")) setScope("discover");
-    if (pathname.includes("favorites")) setScope("favorites");
-  }, [pathname]);
-
-  useEffect(() => {
-    getCurrentUserProfile()
-      .then(setProfile)
+    Promise.all([getCurrentUserProfile(), getRecipes()])
+      .then(([nextProfile, nextRecipes]) => {
+        setProfile(nextProfile);
+        setRecipes(nextRecipes);
+      })
       .catch(() => router.push("/"));
   }, [router]);
 
   async function surpriseMe() {
     if (!profile) return;
     const recipes = await getRecipes();
-    const favorites = await getFavorites();
-    const pool = recipes.filter((recipe) => {
-      if (scope === "mine") return recipe.ownerId === profile.id;
-      if (scope === "favorites") return favorites.includes(recipe.id);
-      return recipe.visibility === "public";
-    });
+    const pool = recipes.filter(
+      (recipe) =>
+        recipe.ownerId === profile.id || recipe.visibility === "public",
+    );
     const pick = pool[Math.floor(Math.random() * pool.length)];
     if (pick) router.push(`/app/recipe/${pick.id}`);
+  }
+
+  function openRecipe(recipeId: string) {
+    setSearchQuery("");
+    setSearchOpen(false);
+    router.push(`/app/recipe/${recipeId}`);
+  }
+
+  function handleSearchSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const [firstResult] = searchResults;
+    if (firstResult) openRecipe(firstResult.id);
   }
 
   async function handleSignOut() {
@@ -90,23 +127,53 @@ export function AppShell({ children }: Props) {
       </aside>
       <main className="py-6 lg:py-8">
         <div className="no-print mx-auto mb-8 flex w-[min(1120px,calc(100%-32px))] flex-col gap-4 px-4 md:flex-row md:items-center md:justify-between md:px-0">
-          <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-black/10 bg-white/75 p-2 shadow-[0_12px_34px_rgba(31,37,32,0.08)] backdrop-blur">
-            <select
-              className="min-h-11 rounded-xl border border-black/10 bg-white px-3 text-sm font-bold text-[#1f2520] outline-none"
-              aria-label="Surprise recipe scope"
-              value={scope}
-              onChange={(event) => setScope(event.target.value)}
-            >
-              <option value="mine">My Cookbook</option>
-              <option value="discover">Discover</option>
-              <option value="favorites">My Favorites</option>
-            </select>
+          <div className="flex flex-col gap-2 rounded-2xl border border-black/10 bg-white/75 p-2 shadow-[0_12px_34px_rgba(31,37,32,0.08)] backdrop-blur sm:flex-row sm:items-center">
+            <form className="relative" onSubmit={handleSearchSubmit}>
+              <input
+                className="min-h-11 w-full min-w-0 rounded-xl border border-black/10 bg-white px-3 text-sm font-bold text-[#1f2520] outline-none transition placeholder:text-[#8b9288] focus:border-[#d94f32]/50 focus:ring-4 focus:ring-[#d94f32]/10 sm:w-72"
+                type="search"
+                placeholder="Search all recipes"
+                value={searchQuery}
+                onBlur={() => setSearchOpen(false)}
+                onChange={(event) => {
+                  setSearchQuery(event.target.value);
+                  setSearchOpen(true);
+                }}
+                onFocus={() => setSearchOpen(true)}
+              />
+              {searchOpen && searchQuery.trim() ? (
+                <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-20 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_18px_50px_rgba(31,37,32,0.14)]">
+                  {searchResults.length ? (
+                    searchResults.map((recipe) => (
+                      <button
+                        className="block w-full px-4 py-3 text-left transition hover:bg-[#f5efe3]"
+                        key={recipe.id}
+                        type="button"
+                        onMouseDown={(event) => event.preventDefault()}
+                        onClick={() => openRecipe(recipe.id)}
+                      >
+                        <span className="block text-sm font-black text-[#1f2520]">
+                          {recipe.title}
+                        </span>
+                        <span className="mt-1 block text-xs font-bold uppercase tracking-[0.12em] text-[#6f8764]">
+                          {recipe.cuisine} · {recipe.ownerId === profile?.id ? "Yours" : "Public"}
+                        </span>
+                      </button>
+                    ))
+                  ) : (
+                    <p className="px-4 py-3 text-sm font-bold text-[#596159]">
+                      No recipes found
+                    </p>
+                  )}
+                </div>
+              ) : null}
+            </form>
             <button
               className="min-h-11 rounded-xl bg-[#d94f32] px-4 text-sm font-black text-white shadow-lg shadow-[#d94f32]/25 transition hover:bg-[#b83e27]"
               type="button"
               onClick={surpriseMe}
             >
-              Surprise Me
+              Inspire Me Today!🍽️
             </button>
           </div>
           <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-white/75 p-2 shadow-[0_12px_34px_rgba(31,37,32,0.08)] backdrop-blur">
@@ -146,4 +213,8 @@ function navClass(active: boolean) {
       ? "border-[#d94f32]/25 bg-[#d94f32] text-white shadow-lg shadow-[#d94f32]/20"
       : "border-transparent text-[#4c554d] hover:border-black/10 hover:bg-[#f5efe3] hover:text-[#d94f32]",
   ].join(" ");
+}
+
+function normalize(value: string) {
+  return value.trim().toLowerCase();
 }

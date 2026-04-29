@@ -234,7 +234,10 @@ export function createBlankRecipe(profile: UserProfile): Recipe {
     visibility: "public",
     ownerId: profile.id,
     authorName: profile.name,
+    authorFullName: profile.fullName,
+    authorEmail: profile.email,
     authorAvatar: profile.avatar,
+    authorAvatarUrl: profile.avatarUrl,
     createdAt: new Date().toISOString(),
   };
 }
@@ -242,6 +245,7 @@ export function createBlankRecipe(profile: UserProfile): Recipe {
 function mapRecipe(row: RecipeRow): Recipe {
   const profile = Array.isArray(row.profiles) ? row.profiles[0] : row.profiles;
   const authorName = profile?.display_name ?? "Cook";
+  const authorFullName = profile?.full_name ?? authorName;
 
   return {
     id: row.id,
@@ -260,7 +264,10 @@ function mapRecipe(row: RecipeRow): Recipe {
     visibility: row.visibility,
     ownerId: row.owner_id,
     authorName,
+    authorFullName,
+    authorEmail: profile?.email ?? null,
     authorAvatar: initials(authorName),
+    authorAvatarUrl: profile?.avatar_url ?? null,
     createdAt: row.created_at,
   };
 }

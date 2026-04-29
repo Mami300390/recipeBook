@@ -4,7 +4,12 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Recipe, UserProfile, difficulties } from "@/lib/recipes";
 import { defaultFilters, filterRecipes, Filters, Scope } from "@/lib/filter";
-import { getCurrentUserProfile, getFavorites, getRecipes } from "@/lib/store";
+import {
+  getCurrentUserProfile,
+  getFavorites,
+  getRecipes,
+  toggleFavorite,
+} from "@/lib/store";
 import { RecipeCard } from "./RecipeCard";
 
 type Props = {
@@ -48,12 +53,17 @@ export function RecipeExplorer({
     [recipes],
   );
   const dietaryTags = useMemo(
-    () => Array.from(new Set(recipes.flatMap((recipe) => recipe.dietary))).sort(),
+    () =>
+      Array.from(new Set(recipes.flatMap((recipe) => recipe.dietary))).sort(),
     [recipes],
   );
 
   function updateFilter<K extends keyof Filters>(key: K, value: Filters[K]) {
     setFilters((current) => ({ ...current, [key]: value }));
+  }
+
+  async function handleToggleFavorite(recipeId: string) {
+    setFavorites(await toggleFavorite(recipeId));
   }
 
   return (
@@ -123,7 +133,9 @@ export function RecipeExplorer({
         <select
           className="min-h-11 rounded-2xl border border-black/10 bg-white px-3 font-bold text-[#1f2520] md:col-start-1"
           value={filters.sort}
-          onChange={(event) => updateFilter("sort", event.target.value as Filters["sort"])}
+          onChange={(event) =>
+            updateFilter("sort", event.target.value as Filters["sort"])
+          }
         >
           <option value="newest">Newest</option>
           <option value="favorites">Favorites</option>
@@ -139,6 +151,7 @@ export function RecipeExplorer({
               recipe={recipe}
               favorite={favorites.includes(recipe.id)}
               currentUserId={profile?.id}
+              onToggleFavorite={handleToggleFavorite}
             />
           ))}
         </section>
@@ -151,7 +164,9 @@ export function RecipeExplorer({
         </section>
       ) : (
         <section className="mx-auto w-[min(1120px,calc(100%-32px))] rounded-3xl border border-dashed border-[#6f8764]/40 bg-white/75 p-8 text-center shadow-[0_18px_50px_rgba(31,37,32,0.08)]">
-          <h2 className="serif text-3xl font-black text-[#1f2520]">{emptyTitle}</h2>
+          <h2 className="serif text-3xl font-black text-[#1f2520]">
+            {emptyTitle}
+          </h2>
           {emptyAction ? (
             <Link
               className="mt-5 inline-flex min-h-11 items-center rounded-2xl bg-[#d94f32] px-5 font-black text-white shadow-lg shadow-[#d94f32]/20 transition hover:bg-[#b83e27]"
