@@ -4,9 +4,9 @@ export default function DiscoverPage() {
   return (
     <RecipeExplorer
       scope="discover"
-      title="Discover"
-      description="Browse public recipes from other cooks, search by ingredient or author, and save what catches your appetite."
-      emptyTitle="No public recipes match those filters."
+      title="اكتشف"
+      description="تصفح وصفات عامة من طهاة آخرين، وابحث بالمكونات أو باسم الكاتب، واحفظ ما يعجبك."
+      emptyTitle="لا توجد وصفات عامة تطابق هذه الفلاتر."
     />
   );
 }

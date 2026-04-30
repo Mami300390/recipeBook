@@ -33,8 +33,8 @@ export function RecipeCard({
       <div className="grid gap-3 p-5">
         <div className="flex flex-wrap gap-2 text-xs font-black uppercase tracking-[0.12em] text-[#6f8764]">
           <span>{recipe.cuisine}</span>
-          <span>{totalTime} min</span>
-          <span>{recipe.difficulty}</span>
+          <span>{totalTime} دقيقة</span>
+          <span>{difficultyLabel(recipe.difficulty)}</span>
         </div>
         <Link href={`/app/recipe/${recipe.id}`}>
           <h2 className="serif m-0 text-2xl font-black leading-tight text-[#1f2520] transition group-hover:text-[#d94f32]">
@@ -53,9 +53,9 @@ export function RecipeCard({
           </span>
           <span>
             {recipe.authorName}
-            {isMine ? " · yours" : ""}
+            {isMine ? " · لك" : ""}
           </span>
-          <span>{recipe.visibility}</span>
+          <span>{visibilityLabel(recipe.visibility)}</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {recipe.dietary.map((tag) => (
@@ -72,7 +72,7 @@ export function RecipeCard({
             className="text-sm font-black text-[#d94f32] transition hover:text-[#b83e27]"
             href={`/app/recipe/${recipe.id}`}
           >
-            View recipe
+            عرض الوصفة
           </Link>
           <button
             className={[
@@ -84,10 +84,20 @@ export function RecipeCard({
             type="button"
             onClick={() => onToggleFavorite?.(recipe.id)}
           >
-            {favorite ? "♥ Favorited" : "♡ Favorite"}
+            {favorite ? "♥ محفوظة" : "♡ حفظ"}
           </button>
         </div>
       </div>
     </article>
   );
+}
+
+function difficultyLabel(difficulty: Recipe["difficulty"]) {
+  if (difficulty === "Easy") return "سهل";
+  if (difficulty === "Medium") return "متوسط";
+  return "صعب";
+}
+
+function visibilityLabel(visibility: Recipe["visibility"]) {
+  return visibility === "public" ? "عام" : "خاص";
 }

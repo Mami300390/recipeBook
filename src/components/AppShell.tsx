@@ -94,34 +94,34 @@ export function AppShell({ children }: Props) {
         <Link href="/app" className="flex items-center">
           <Image
             src="/logo-bg.png"
-            alt="Recipe Book Logo"
+            alt="شعار دفتر الوصفات"
             width={220}
             height={80}
             priority
-            className="mb-5 h-14 w-auto object-contain"
+            className="mb-5 h-15 w-auto object-contain mx-auto"
           />
         </Link>
         <nav
           className="grid grid-cols-2 gap-2 lg:grid-cols-1"
-          aria-label="Recipe app"
+          aria-label="تطبيق الوصفات"
         >
           <Link className={navClass(pathname === "/app")} href="/app">
-            My Cookbook
+            وصفاتي
           </Link>
           <Link
             className={navClass(pathname === "/app/discover")}
             href="/app/discover"
           >
-            Discover
+            اكتشف
           </Link>
           <Link
             className={navClass(pathname === "/app/favorites")}
             href="/app/favorites"
           >
-            Favorites
+            المفضلة
           </Link>
           <Link className={navClass(pathname === "/app/new")} href="/app/new">
-            Add Recipe
+            أضف وصفة
           </Link>
         </nav>
       </aside>
@@ -132,7 +132,7 @@ export function AppShell({ children }: Props) {
               <input
                 className="min-h-11 w-full min-w-0 rounded-xl border border-black/10 bg-white px-3 text-sm font-bold text-[#1f2520] outline-none transition placeholder:text-[#8b9288] focus:border-[#d94f32]/50 focus:ring-4 focus:ring-[#d94f32]/10 sm:w-72"
                 type="search"
-                placeholder="Search all recipes"
+                placeholder="ابحث في كل الوصفات"
                 value={searchQuery}
                 onBlur={() => setSearchOpen(false)}
                 onChange={(event) => {
@@ -146,7 +146,7 @@ export function AppShell({ children }: Props) {
                   {searchResults.length ? (
                     searchResults.map((recipe) => (
                       <button
-                        className="block w-full px-4 py-3 text-left transition hover:bg-[#f5efe3]"
+                        className="block w-full px-4 py-3 text-right transition hover:bg-[#f5efe3]"
                         key={recipe.id}
                         type="button"
                         onMouseDown={(event) => event.preventDefault()}
@@ -156,13 +156,14 @@ export function AppShell({ children }: Props) {
                           {recipe.title}
                         </span>
                         <span className="mt-1 block text-xs font-bold uppercase tracking-[0.12em] text-[#6f8764]">
-                          {recipe.cuisine} · {recipe.ownerId === profile?.id ? "Yours" : "Public"}
+                          {recipe.cuisine} ·{" "}
+                          {recipe.ownerId === profile?.id ? "وصفاتك" : "عام"}
                         </span>
                       </button>
                     ))
                   ) : (
                     <p className="px-4 py-3 text-sm font-bold text-[#596159]">
-                      No recipes found
+                      لا توجد وصفات مطابقة
                     </p>
                   )}
                 </div>
@@ -173,7 +174,7 @@ export function AppShell({ children }: Props) {
               type="button"
               onClick={surpriseMe}
             >
-              Inspire Me Today!🍽️
+              اقترح لي وصفة 🍽️
             </button>
           </div>
           <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-white/75 p-2 shadow-[0_12px_34px_rgba(31,37,32,0.08)] backdrop-blur">
@@ -190,13 +191,13 @@ export function AppShell({ children }: Props) {
                 {profile?.avatar ?? ""}
               </span>
             )}
-            <strong>{profile?.name ?? "Cook"}</strong>
+            <strong>{profile?.name ?? "طاهٍ"}</strong>
             <button
               className="min-h-10 rounded-xl border border-black/10 bg-white px-3 text-sm font-black text-[#1f2520] transition hover:border-[#d94f32]/40 hover:text-[#d94f32]"
               type="button"
               onClick={handleSignOut}
             >
-              Sign out
+              تسجيل الخروج
             </button>
           </div>
         </div>

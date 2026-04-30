@@ -36,7 +36,7 @@ export function RecipeForm({ initialRecipe, mode }: Props) {
     if (!recipe) return;
     const cleaned: Recipe = {
       ...recipe,
-      title: recipe.title.trim() || "Untitled Recipe",
+      title: recipe.title.trim() || "وصفة بلا عنوان",
       ingredients: recipe.ingredients.filter((ingredient) => ingredient.name.trim()),
       steps: recipe.steps.filter((step) => step.trim()),
       dietary: recipe.dietary.filter(Boolean),
@@ -45,7 +45,7 @@ export function RecipeForm({ initialRecipe, mode }: Props) {
       await saveRecipe(cleaned);
       router.push(`/app/recipe/${cleaned.id}`);
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Could not save recipe.");
+      setError(caught instanceof Error ? caught.message : "تعذر حفظ الوصفة.");
     }
   }
 
@@ -55,7 +55,7 @@ export function RecipeForm({ initialRecipe, mode }: Props) {
       const url = await uploadRecipePhoto(file);
       set("photo", url);
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Could not upload photo.");
+      setError(caught instanceof Error ? caught.message : "تعذر رفع الصورة.");
     }
   }
 
@@ -63,7 +63,7 @@ export function RecipeForm({ initialRecipe, mode }: Props) {
     return (
       <section className="mx-auto w-[min(1120px,calc(100%-32px))] rounded-3xl border border-dashed border-[#6f8764]/40 bg-white/75 p-8 text-center shadow-[0_18px_50px_rgba(31,37,32,0.08)]">
         <h1 className="serif text-3xl font-black text-[#1f2520]">
-          {error || "Preparing recipe form..."}
+          {error || "جار تجهيز نموذج الوصفة..."}
         </h1>
       </section>
     );
@@ -74,14 +74,14 @@ export function RecipeForm({ initialRecipe, mode }: Props) {
       <section className="mx-auto mb-6 flex w-[min(1120px,calc(100%-32px))] flex-col gap-4 px-4 md:flex-row md:items-end md:justify-between md:px-0">
         <div>
           <p className="mb-2 text-xs font-black uppercase tracking-[0.16em] text-[#d94f32]">
-            {mode === "new" ? "Add" : "Edit"}
+            {mode === "new" ? "إضافة" : "تعديل"}
           </p>
           <h1 className="serif text-5xl font-black leading-none text-[#1f2520] md:text-7xl">
-            {mode === "new" ? "New Recipe" : recipe.title}
+            {mode === "new" ? "وصفة جديدة" : recipe.title}
           </h1>
         </div>
         <p className="max-w-xl leading-7 text-[#596159]">
-          Capture the dish in enough detail that future-you can cook it without hunting for notes.
+          اكتب تفاصيل الوصفة بشكل واضح حتى تستطيع الرجوع إليها وطبخها بسهولة لاحقا.
         </p>
       </section>
       <form
@@ -89,58 +89,58 @@ export function RecipeForm({ initialRecipe, mode }: Props) {
         onSubmit={submit}
       >
         <label className="grid gap-2 font-black text-[#596159] md:col-span-2">
-          Title
+          العنوان
           <input className={fieldClass} value={recipe.title} onChange={(event) => set("title", event.target.value)} />
         </label>
         <label className="grid gap-2 font-black text-[#596159] md:col-span-2">
-          Description
+          الوصف
           <textarea className={textareaClass} value={recipe.description} onChange={(event) => set("description", event.target.value)} />
         </label>
         <label className="grid gap-2 font-black text-[#596159] md:col-span-2">
-          Photo URL
+          رابط الصورة
           <input className={fieldClass} value={recipe.photo} onChange={(event) => set("photo", event.target.value)} />
         </label>
         <label className="grid gap-2 font-black text-[#596159] md:col-span-2">
-          Upload photo
+          رفع صورة
           <input className={fieldClass} type="file" accept="image/*" onChange={(event) => handlePhotoUpload(event.target.files?.[0])} />
         </label>
         <label className="grid gap-2 font-black text-[#596159]">
-          Servings
+          عدد الحصص
           <input className={fieldClass} type="number" min="1" value={recipe.servings} onChange={(event) => set("servings", Number(event.target.value))} />
         </label>
         <label className="grid gap-2 font-black text-[#596159]">
-          Prep minutes
+          دقائق التحضير
           <input className={fieldClass} type="number" min="0" value={recipe.prepTime} onChange={(event) => set("prepTime", Number(event.target.value))} />
         </label>
         <label className="grid gap-2 font-black text-[#596159]">
-          Cook minutes
+          دقائق الطبخ
           <input className={fieldClass} type="number" min="0" value={recipe.cookTime} onChange={(event) => set("cookTime", Number(event.target.value))} />
         </label>
         <label className="grid gap-2 font-black text-[#596159]">
-          Difficulty
+          مستوى الصعوبة
           <select className={fieldClass} value={recipe.difficulty} onChange={(event) => set("difficulty", event.target.value as Recipe["difficulty"])}>
-            <option>Easy</option>
-            <option>Medium</option>
-            <option>Hard</option>
+            <option value="Easy">سهل</option>
+            <option value="Medium">متوسط</option>
+            <option value="Hard">صعب</option>
           </select>
         </label>
         <label className="grid gap-2 font-black text-[#596159]">
-          Cuisine
+          المطبخ
           <input className={fieldClass} value={recipe.cuisine} onChange={(event) => set("cuisine", event.target.value)} />
         </label>
         <label className="grid gap-2 font-black text-[#596159]">
-          Dietary tags
+          التصنيفات الغذائية
           <input className={fieldClass} value={recipe.dietary.join(", ")} onChange={(event) => set("dietary", event.target.value.split(",").map((tag) => tag.trim()))} />
         </label>
         <label className="grid gap-2 font-black text-[#596159]">
-          Visibility
+          الخصوصية
           <select className={fieldClass} value={recipe.visibility} onChange={(event) => set("visibility", event.target.value as Recipe["visibility"])}>
-            <option value="public">Public</option>
-            <option value="private">Private</option>
+            <option value="public">عام</option>
+            <option value="private">خاص</option>
           </select>
         </label>
         <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-[0_18px_50px_rgba(31,37,32,0.08)] md:col-span-2">
-          <h2 className="serif mb-4 text-3xl font-black text-[#1f2520]">Ingredients</h2>
+          <h2 className="serif mb-4 text-3xl font-black text-[#1f2520]">المكونات</h2>
           {recipe.ingredients.map((ingredient, index) => (
             <div className="mb-2 grid grid-cols-1 gap-2 md:grid-cols-[1fr_1fr_1.4fr]" key={index}>
               <input className={fieldClass} type="number" min="0" step="0.25" value={ingredient.qty} onChange={(event) => {
@@ -148,12 +148,12 @@ export function RecipeForm({ initialRecipe, mode }: Props) {
                 ingredients[index] = { ...ingredient, qty: Number(event.target.value) };
                 set("ingredients", ingredients);
               }} />
-              <input className={fieldClass} value={ingredient.unit} placeholder="unit" onChange={(event) => {
+              <input className={fieldClass} value={ingredient.unit} placeholder="الوحدة" onChange={(event) => {
                 const ingredients = [...recipe.ingredients];
                 ingredients[index] = { ...ingredient, unit: event.target.value };
                 set("ingredients", ingredients);
               }} />
-              <input className={fieldClass} value={ingredient.name} placeholder="ingredient" onChange={(event) => {
+              <input className={fieldClass} value={ingredient.name} placeholder="المكون" onChange={(event) => {
                 const ingredients = [...recipe.ingredients];
                 ingredients[index] = { ...ingredient, name: event.target.value };
                 set("ingredients", ingredients);
@@ -161,11 +161,11 @@ export function RecipeForm({ initialRecipe, mode }: Props) {
             </div>
           ))}
           <button className={ghostButtonClass} type="button" onClick={() => set("ingredients", [...recipe.ingredients, { qty: 1, unit: "", name: "" }])}>
-            Add ingredient
+            إضافة مكون
           </button>
         </div>
         <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-[0_18px_50px_rgba(31,37,32,0.08)] md:col-span-2">
-          <h2 className="serif mb-4 text-3xl font-black text-[#1f2520]">Steps</h2>
+          <h2 className="serif mb-4 text-3xl font-black text-[#1f2520]">الخطوات</h2>
           {recipe.steps.map((step, index) => (
             <textarea key={index} className={`${textareaClass} mb-2`} value={step} onChange={(event) => {
               const steps = [...recipe.steps];
@@ -174,20 +174,20 @@ export function RecipeForm({ initialRecipe, mode }: Props) {
             }} />
           ))}
           <button className={ghostButtonClass} type="button" onClick={() => set("steps", [...recipe.steps, ""])}>
-            Add step
+            إضافة خطوة
           </button>
         </div>
         <label className="grid gap-2 font-black text-[#596159] md:col-span-2">
-          Notes
+          ملاحظات
           <textarea className={textareaClass} value={recipe.notes} onChange={(event) => set("notes", event.target.value)} />
         </label>
         <div className="flex flex-wrap gap-3 md:col-span-2">
           {error ? <p className="w-full text-[#b83e27]">{error}</p> : null}
           <button className="min-h-11 rounded-2xl bg-[#d94f32] px-5 font-black text-white shadow-lg shadow-[#d94f32]/20 transition hover:bg-[#b83e27]" type="submit">
-            Save recipe
+            حفظ الوصفة
           </button>
           <button className={ghostButtonClass} type="button" onClick={() => router.back()}>
-            Cancel
+            إلغاء
           </button>
         </div>
       </form>

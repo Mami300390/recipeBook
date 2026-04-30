@@ -27,13 +27,13 @@ export function EditRecipeLoader() {
     return (
       <section className="mx-auto w-[min(1120px,calc(100%-32px))] rounded-3xl border border-dashed border-[#6f8764]/40 bg-white/75 p-8 text-center shadow-[0_18px_50px_rgba(31,37,32,0.08)]">
         <h1 className="serif text-3xl font-black text-[#1f2520]">
-          Only the author can edit this recipe.
+          يمكن للكاتب فقط تعديل هذه الوصفة.
         </h1>
         <Link
           className="mt-5 inline-flex min-h-11 items-center rounded-2xl bg-[#d94f32] px-5 font-black text-white shadow-lg shadow-[#d94f32]/20 transition hover:bg-[#b83e27]"
           href="/app/discover"
         >
-          Back to Discover
+          العودة إلى الاكتشاف
         </Link>
       </section>
     );

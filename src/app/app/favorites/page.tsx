@@ -4,9 +4,9 @@ export default function FavoritesPage() {
   return (
     <RecipeExplorer
       scope="favorites"
-      title="Favorites"
-      description="All the recipes you hearted, whether they came from your cookbook or the shared table."
-      emptyTitle="No favorites yet."
+      title="المفضلة"
+      description="كل الوصفات التي حفظتها، سواء كانت من دفتر وصفاتك أو من الوصفات العامة."
+      emptyTitle="لا توجد وصفات مفضلة بعد."
     />
   );
 }

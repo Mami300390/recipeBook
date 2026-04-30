@@ -40,13 +40,13 @@ export function RecipeDetail() {
     return (
       <section className="mx-auto w-[min(1120px,calc(100%-32px))] rounded-3xl border border-dashed border-[#6f8764]/40 bg-white/75 p-8 text-center shadow-[0_18px_50px_rgba(31,37,32,0.08)]">
         <h1 className="serif text-3xl font-black text-[#1f2520]">
-          Recipe not found
+          الوصفة غير موجودة
         </h1>
         <Link
           className="mt-5 inline-flex min-h-11 items-center rounded-2xl bg-[#d94f32] px-5 font-black text-white"
           href="/app"
         >
-          Back to cookbook
+          العودة إلى الوصفات
         </Link>
       </section>
     );
@@ -71,14 +71,14 @@ export function RecipeDetail() {
       >
         <div className="mx-auto w-[min(1120px,100%)] drop-shadow-xl">
           <p className="mb-3 text-xs font-black uppercase tracking-[0.16em] text-[#ffcfbc]">
-            {recipe.cuisine} · {recipe.difficulty}
+            {recipe.cuisine} · {difficultyLabel(recipe.difficulty)}
           </p>
           <h1 className="serif max-w-4xl text-5xl font-black leading-none md:text-8xl">
             {recipe.title}
           </h1>
           <p className="mt-4 text-[#f8efe4]">
-            By {recipe.authorName} · {recipe.prepTime + recipe.cookTime} minutes
-            · {recipe.visibility}
+            بواسطة {recipe.authorName} · {recipe.prepTime + recipe.cookTime} دقيقة
+            · {visibilityLabel(recipe.visibility)}
           </p>
         </div>
       </section>
@@ -92,7 +92,7 @@ export function RecipeDetail() {
                 setFavorites(await toggleFavorite(recipe.id))
               }
             >
-              {favorite ? "Hearted" : "Favorite"}
+              {favorite ? "محفوظة" : "حفظ"}
             </button>
             {isMine ? (
               <>
@@ -100,14 +100,14 @@ export function RecipeDetail() {
                   className={ghostButtonClass}
                   href={`/app/recipe/${recipe.id}/edit`}
                 >
-                  Edit
+                  تعديل
                 </Link>
                 <button
                   className={ghostButtonClass}
                   type="button"
                   onClick={remove}
                 >
-                  Delete
+                  حذف
                 </button>
               </>
             ) : null}
@@ -116,13 +116,13 @@ export function RecipeDetail() {
               type="button"
               onClick={() => window.print()}
             >
-              Print
+              طباعة
             </button>
           </div>
 
           <section className="mb-6 rounded-2xl border border-black/10 bg-[#fbf7ef] p-4">
             <p className="mb-3 text-xs font-black uppercase tracking-[0.16em] text-[#d94f32]">
-              Author
+              الكاتب
             </p>
             <div className="flex items-center gap-3">
               {recipe.authorAvatarUrl ? (
@@ -143,7 +143,7 @@ export function RecipeDetail() {
                   {recipe.authorFullName}
                 </h2>
                 <p className="mt-1 text-sm font-bold text-[#596159]">
-                  {isMine ? "Your recipe" : "Community recipe"} · Added{" "}
+                  {isMine ? "وصفتك" : "وصفة من المجتمع"} · أضيفت في{" "}
                   {formatDate(recipe.createdAt)}
                 </p>
               </div>
@@ -156,12 +156,12 @@ export function RecipeDetail() {
           </section>
 
           <div className="mb-5 grid gap-2 font-black text-[#596159]">
-            <span>Servings</span>
+            <span>الحصص</span>
             <div className="inline-flex w-fit items-center gap-3 rounded-2xl border border-black/10 bg-white p-1 text-[#1f2520]">
               <button
                 className="grid h-10 w-10 place-items-center rounded-xl border border-black/10 text-xl font-black transition hover:border-[#d94f32]/40 hover:text-[#d94f32] disabled:cursor-not-allowed disabled:opacity-40"
                 type="button"
-                aria-label="Decrease servings"
+                aria-label="تقليل عدد الحصص"
                 disabled={servings <= 1}
                 onClick={() => setServings((current) => Math.max(1, current - 1))}
               >
@@ -173,7 +173,7 @@ export function RecipeDetail() {
               <button
                 className="grid h-10 w-10 place-items-center rounded-xl border border-black/10 text-xl font-black transition hover:border-[#d94f32]/40 hover:text-[#d94f32]"
                 type="button"
-                aria-label="Increase servings"
+                aria-label="زيادة عدد الحصص"
                 onClick={() => setServings((current) => current + 1)}
               >
                 +
@@ -181,7 +181,7 @@ export function RecipeDetail() {
             </div>
           </div>
           <h2 className="serif mb-4 text-3xl font-black text-[#1f2520]">
-            Ingredients
+            المكونات
           </h2>
           <ul className="grid list-none gap-3 p-0">
             {recipe.ingredients.map((ingredient) => (
@@ -202,7 +202,7 @@ export function RecipeDetail() {
             {recipe.description}
           </p>
           <h2 className="serif mb-4 mt-6 text-3xl font-black text-[#1f2520]">
-            Steps
+            الخطوات
           </h2>
           <ol className="grid list-none gap-3 p-0">
             {recipe.steps.map((step, index) => (
@@ -220,7 +220,7 @@ export function RecipeDetail() {
           {recipe.notes ? (
             <>
               <h2 className="serif mb-3 mt-6 text-3xl font-black text-[#1f2520]">
-                Notes
+                ملاحظات
               </h2>
               <p className="leading-7 text-[#596159]">{recipe.notes}</p>
             </>
@@ -241,9 +241,19 @@ function formatQty(value: number) {
 }
 
 function formatDate(value: string) {
-  return new Intl.DateTimeFormat("en", {
+  return new Intl.DateTimeFormat("ar", {
     month: "short",
     day: "numeric",
     year: "numeric",
   }).format(new Date(value));
+}
+
+function difficultyLabel(difficulty: Recipe["difficulty"]) {
+  if (difficulty === "Easy") return "سهل";
+  if (difficulty === "Medium") return "متوسط";
+  return "صعب";
+}
+
+function visibilityLabel(visibility: Recipe["visibility"]) {
+  return visibility === "public" ? "عام" : "خاص";
 }

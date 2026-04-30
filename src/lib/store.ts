@@ -38,7 +38,7 @@ export async function getCurrentUserProfile(): Promise<UserProfile> {
   } = await supabase.auth.getUser();
 
   if (userError || !user) {
-    throw new Error("You need to sign in first.");
+    throw new Error("تحتاج إلى تسجيل الدخول أولا.");
   }
 
   const { data: profile } = await supabase
@@ -51,10 +51,10 @@ export async function getCurrentUserProfile(): Promise<UserProfile> {
     user.user_metadata.full_name ??
     user.user_metadata.name ??
     user.email?.split("@")[0] ??
-    "Cook";
+    "طاهٍ";
   const userName = firstName(fullName);
   const profileName = profile?.display_name?.trim();
-  const shouldSyncName = !profileName || profileName === "Cook";
+  const shouldSyncName = !profileName || profileName === "Cook" || profileName === "طاهٍ";
   const name = shouldSyncName ? userName : profileName;
 
   if (
@@ -126,7 +126,7 @@ export async function saveRecipe(recipe: Recipe) {
     error: userError,
   } = await supabase.auth.getUser();
 
-  if (userError || !user) throw new Error("You need to sign in first.");
+  if (userError || !user) throw new Error("تحتاج إلى تسجيل الدخول أولا.");
 
   const payload = {
     id: recipe.id,
@@ -157,7 +157,7 @@ export async function uploadRecipePhoto(file: File): Promise<string> {
     error: userError,
   } = await supabase.auth.getUser();
 
-  if (userError || !user) throw new Error("You need to sign in first.");
+  if (userError || !user) throw new Error("تحتاج إلى تسجيل الدخول أولا.");
 
   const extension = file.name.split(".").pop() ?? "jpg";
   const path = `${user.id}/${crypto.randomUUID()}.${extension}`;
@@ -194,7 +194,7 @@ export async function toggleFavorite(id: string): Promise<string[]> {
     error: userError,
   } = await supabase.auth.getUser();
 
-  if (userError || !user) throw new Error("You need to sign in first.");
+  if (userError || !user) throw new Error("تحتاج إلى تسجيل الدخول أولا.");
 
   const favorites = await getFavorites();
 
@@ -226,9 +226,9 @@ export function createBlankRecipe(profile: UserProfile): Recipe {
     prepTime: 15,
     cookTime: 30,
     difficulty: "Easy",
-    cuisine: "Home",
+    cuisine: "منزلي",
     dietary: [],
-    ingredients: [{ qty: 1, unit: "cup", name: "" }],
+    ingredients: [{ qty: 1, unit: "كوب", name: "" }],
     steps: [""],
     notes: "",
     visibility: "public",
@@ -244,7 +244,7 @@ export function createBlankRecipe(profile: UserProfile): Recipe {
 
 function mapRecipe(row: RecipeRow): Recipe {
   const profile = Array.isArray(row.profiles) ? row.profiles[0] : row.profiles;
-  const authorName = profile?.display_name ?? "Cook";
+  const authorName = profile?.display_name ?? "طاهٍ";
   const authorFullName = profile?.full_name ?? authorName;
 
   return {
@@ -282,5 +282,5 @@ function initials(name: string) {
 }
 
 function firstName(name: string) {
-  return name.trim().split(/\s+/)[0] || "Cook";
+  return name.trim().split(/\s+/)[0] || "طاهٍ";
 }

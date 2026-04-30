@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -20,7 +21,7 @@ body {
   min-height: 100vh;
   margin: 0;
   color: var(--ink);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Cairo", "Tajawal", "Noto Kufi Arabic", Arial, Helvetica, sans-serif;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(251, 247, 239, 0.88)),
     radial-gradient(circle at top left, rgba(217, 79, 50, 0.12), transparent 32%),
@@ -40,13 +41,13 @@ button {
 }
 
 .serif {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Cairo", "Tajawal", Arial, Helvetica, sans-serif;
 }
 
 .detail-print-title::first-letter {
-  float: left;
-  padding-right: 8px;
-  font-family: Georgia, "Times New Roman", serif;
+  float: right;
+  padding-left: 8px;
+  font-family: "Cairo", "Tajawal", Arial, Helvetica, sans-serif;
   font-size: 3.8rem;
   line-height: 0.9;
   color: #d94f32;

@@ -4,10 +4,10 @@ export default function MyCookbookPage() {
   return (
     <RecipeExplorer
       scope="mine"
-      title="My Cookbook"
-      description="Your private and public recipes live here, ready to edit, print, favorite, and cook again."
-      emptyTitle="Your cookbook is waiting for its first recipe."
-      emptyAction="Add your first recipe"
+      title="وصفاتي"
+      description="هنا تجد وصفاتك الخاصة والعامة، جاهزة للتعديل والطباعة والحفظ والطبخ من جديد."
+      emptyTitle="دفترك ينتظر أول وصفة."
+      emptyAction="أضف أول وصفة"
     />
   );
 }

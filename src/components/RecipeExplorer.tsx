@@ -71,7 +71,7 @@ export function RecipeExplorer({
       <section className="mx-auto mb-6 flex w-[min(1120px,calc(100%-32px))] flex-col gap-4 px-4 md:flex-row md:items-end md:justify-between md:px-0">
         <div>
           <p className="mb-2 text-xs font-black uppercase tracking-[0.16em] text-[#d94f32]">
-            Recipe Book
+            دفتر الوصفات
           </p>
           <h1 className="serif text-5xl font-black leading-none text-[#1f2520] md:text-7xl">
             {title}
@@ -81,11 +81,11 @@ export function RecipeExplorer({
       </section>
       <section
         className="mx-auto mb-6 grid w-[min(1120px,calc(100%-32px))] grid-cols-1 gap-2 rounded-3xl border border-black/10 bg-white/75 p-3 shadow-[0_18px_50px_rgba(31,37,32,0.08)] backdrop-blur md:grid-cols-[1.4fr_repeat(4,minmax(130px,1fr))]"
-        aria-label="Recipe filters"
+          aria-label="فلاتر الوصفات"
       >
         <input
           className="min-h-11 rounded-2xl border border-black/10 bg-white px-3 text-[#1f2520] outline-none transition placeholder:text-[#8b9288] focus:border-[#d94f32]/50 focus:ring-4 focus:ring-[#d94f32]/10"
-          placeholder="Search title, ingredient, tag, author"
+          placeholder="ابحث بالعنوان أو المكون أو التصنيف أو الكاتب"
           value={filters.query}
           onChange={(event) => updateFilter("query", event.target.value)}
         />
@@ -94,7 +94,7 @@ export function RecipeExplorer({
           value={filters.cuisine}
           onChange={(event) => updateFilter("cuisine", event.target.value)}
         >
-          <option>All cuisines</option>
+          <option value="All cuisines">كل المطابخ</option>
           {cuisines.map((cuisine) => (
             <option key={cuisine}>{cuisine}</option>
           ))}
@@ -104,7 +104,7 @@ export function RecipeExplorer({
           value={filters.dietary}
           onChange={(event) => updateFilter("dietary", event.target.value)}
         >
-          <option>All diets</option>
+          <option value="All diets">كل الأنظمة</option>
           {dietaryTags.map((tag) => (
             <option key={tag}>{tag}</option>
           ))}
@@ -114,9 +114,11 @@ export function RecipeExplorer({
           value={filters.difficulty}
           onChange={(event) => updateFilter("difficulty", event.target.value)}
         >
-          <option>All levels</option>
+          <option value="All levels">كل المستويات</option>
           {difficulties.map((difficulty) => (
-            <option key={difficulty}>{difficulty}</option>
+            <option key={difficulty} value={difficulty}>
+              {difficultyLabel(difficulty)}
+            </option>
           ))}
         </select>
         <select
@@ -124,11 +126,11 @@ export function RecipeExplorer({
           value={filters.maxCookTime}
           onChange={(event) => updateFilter("maxCookTime", event.target.value)}
         >
-          <option>Any time</option>
-          <option value="15">15 min</option>
-          <option value="30">30 min</option>
-          <option value="45">45 min</option>
-          <option value="60">60 min</option>
+          <option value="Any time">أي وقت</option>
+          <option value="15">15 دقيقة</option>
+          <option value="30">30 دقيقة</option>
+          <option value="45">45 دقيقة</option>
+          <option value="60">60 دقيقة</option>
         </select>
         <select
           className="min-h-11 rounded-2xl border border-black/10 bg-white px-3 font-bold text-[#1f2520] md:col-start-1"
@@ -137,10 +139,10 @@ export function RecipeExplorer({
             updateFilter("sort", event.target.value as Filters["sort"])
           }
         >
-          <option value="newest">Newest</option>
-          <option value="favorites">Favorites</option>
-          <option value="alphabetical">Alphabetical</option>
-          <option value="quickest">Quickest</option>
+          <option value="newest">الأحدث</option>
+          <option value="favorites">المفضلة أولا</option>
+          <option value="alphabetical">أبجدي</option>
+          <option value="quickest">الأسرع</option>
         </select>
       </section>
       {visible.length ? (
@@ -158,7 +160,7 @@ export function RecipeExplorer({
       ) : error ? (
         <section className="mx-auto w-[min(1120px,calc(100%-32px))] rounded-3xl border border-dashed border-[#6f8764]/40 bg-white/75 p-8 text-center shadow-[0_18px_50px_rgba(31,37,32,0.08)]">
           <h2 className="serif text-3xl font-black text-[#1f2520]">
-            Supabase needs a little attention.
+            يحتاج Supabase إلى بعض الانتباه.
           </h2>
           <p className="mt-2 text-[#596159]">{error}</p>
         </section>
@@ -179,4 +181,10 @@ export function RecipeExplorer({
       )}
     </>
   );
+}
+
+function difficultyLabel(difficulty: Recipe["difficulty"]) {
+  if (difficulty === "Easy") return "سهل";
+  if (difficulty === "Medium") return "متوسط";
+  return "صعب";
 }
