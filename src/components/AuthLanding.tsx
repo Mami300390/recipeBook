@@ -28,7 +28,7 @@ export function AuthLanding() {
             src="/booklogo.png"
             alt="شعار دفتر الوصفات"
             width={200}
-            height={100}
+            height={900}
             priority
             className="h-14 w-auto shrink-0 object-contain md:h-16 lg:h-20"
           />
