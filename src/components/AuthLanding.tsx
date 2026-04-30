@@ -25,7 +25,7 @@ export function AuthLanding() {
       <section className="w-full max-w-3xl md:ml-[max(24px,calc((100vw-1160px)/2))]">
         <div className="mb-5 inline-flex items-center gap-4 rounded-3xl border border-white/15 bg-white/10 px-3 py-2 shadow-2xl shadow-black/20 backdrop-blur-md md:mb-6 sm:mb-7">
           <Image
-            src="/booklogo.png"
+            src="/booklogo.PNG"
             alt="شعار دفتر الوصفات"
             width={200}
             height={900}
