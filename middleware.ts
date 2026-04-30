@@ -5,6 +5,7 @@ export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request,
   });
+  const isAppPath = request.nextUrl.pathname.startsWith("/app");
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -31,6 +32,15 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   if (error) {
+    if (!isAppPath) {
+      request.cookies.getAll().forEach((cookie) => {
+        if (cookie.name.startsWith("sb-")) {
+          response.cookies.delete(cookie.name);
+        }
+      });
+      return response;
+    }
+
     const url = request.nextUrl.clone();
     url.pathname = "/";
     const redirect = NextResponse.redirect(url);
@@ -42,7 +52,7 @@ export async function middleware(request: NextRequest) {
     return redirect;
   }
 
-  if (!user && request.nextUrl.pathname.startsWith("/app")) {
+  if (!user && isAppPath) {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     url.searchParams.set("redirectedFrom", request.nextUrl.pathname);
