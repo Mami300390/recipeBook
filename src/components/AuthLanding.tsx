@@ -22,7 +22,7 @@ export function AuthLanding() {
           "linear-gradient(-90deg,rgba(31,37,32,0.84),rgba(31,37,32,0.28)),url('/flipped.png')",
       }}
     >
-      <section className="w-full max-w-3xl md:ml-[max(24px,calc((100vw-1160px)/2))]">
+      <section className="w-full max-w-3xl md:ml-[max(24px,calc((100vw-1160px)/2))] lg:mx-10">
         <div className="mb-5 inline-flex items-center gap-4 rounded-3xl border border-white/15 bg-white/10 px-3 py-2 shadow-2xl shadow-black/20 backdrop-blur-md md:mb-6 sm:mb-7">
           <Image
             src="/booklogo.PNG"
